@@ -36,25 +36,12 @@ def init_db():
         balance INTEGER DEFAULT 0,
         last_post_time TEXT,
         last_feed_time TEXT,
-        last_event_time TEXT
+        last_event_time TEXT,
+        last_checkin_time TEXT
     )
     """)
     conn.commit()
     conn.close()
-
-
-
-def migrate_db():
-    conn = sqlite3.connect(DB_FILE)
-    c = conn.cursor()
-    try:
-        c.execute("ALTER TABLE users ADD COLUMN last_checkin_time TEXT")
-        print("✅ 'last_checkin_time' 컬럼 추가 완료")
-    except sqlite3.OperationalError:
-        print("⚠️ 'last_checkin_time' 컬럼이 이미 존재하거나 오류 발생")
-    conn.commit()
-    conn.close()
-
 
 
 # --- 유저 존재 확인 ---
@@ -598,5 +585,4 @@ async def on_ready():
 
 
 init_db()
-migrate_db()
 bot.run(Token)
